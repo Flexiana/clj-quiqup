@@ -1,0 +1,46 @@
+(ns clj-quiqup.core
+  (:require
+    [clojure.string :refer [blank?]]
+    [cemerick.url :as url]
+    [clj-http.client :as http]))
+
+
+(def http-opts
+  {:as :json
+   :accept :json
+   :content-type :json
+   :throw-exceptions false})
+
+
+(defn- parse-4xx-response
+  "Parses a :body for all 4xx responses as JSON (with keywords). If a parser throw an exception it sets :body to `nil`
+   and unparsed body is `assoc`ed into :body-unparsed.
+   Thus calling any collection modifier on :body will not throw an exception."
+  [response]
+  (if (and (<= 400 (:status response))
+           (< (:status response) 500))
+    (try
+      (update response :body http/json-decode true)
+      (catch Exception e (-> response
+                             (assoc :body-unparsed (:body response))
+                             (assoc :body nil))))
+    response))
+
+
+(defn check-location
+  "Checks if a given `location` is supported by Quiqup. The `location` could be simple postcode as `string` or
+   coordinates as a tuple `[longitude latitude]`."
+  [host location]
+  {:pre [(not (blank? host))]}
+  (let [assoc-query #(assoc % :query (if (and (vector? location)
+                                              (= 2 (count location)))
+                                       (zipmap [:lon :lat] location)
+                                       {:postcode location}))]
+    (-> host
+        str
+        url/url
+        (assoc :path "/active_locations")
+        assoc-query
+        str
+        (http/get http-opts)
+        parse-4xx-response)))
