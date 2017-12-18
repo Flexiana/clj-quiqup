@@ -44,3 +44,18 @@
         str
         (http/get http-opts)
         parse-4xx-response)))
+
+
+(defn login
+  "Returns a response with a token if it succeeded."
+  [host client-id client-secret]
+  {:pre [(not (blank? host))]}
+  (-> host
+      str
+      url/url
+      (assoc :path "/oauth/token")
+      str
+      (http/post (merge http-opts {:form-params {:grant_type "client_credentials"
+                                                 :client_id client-id
+                                                 :client_secret client-secret}}))
+      parse-4xx-response))
