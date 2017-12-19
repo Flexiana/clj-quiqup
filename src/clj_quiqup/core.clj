@@ -12,6 +12,11 @@
    :throw-exceptions false})
 
 
+(defn- auth-header
+  [token]
+  {"Authorization" (format "Bearer %s" token)})
+
+
 (defn- parse-4xx-response
   "Parses a :body for all 4xx responses as JSON (with keywords). If a parser throw an exception it sets :body to `nil`
    and unparsed body is `assoc`ed into :body-unparsed.
@@ -58,4 +63,17 @@
       (http/post (merge http-opts {:form-params {:grant_type "client_credentials"
                                                  :client_id client-id
                                                  :client_secret client-secret}}))
+      parse-4xx-response))
+
+
+(defn create-job
+  "Creates a job from a given `job-req` object"
+  [host token job-req]
+  {:pre [(not (blank? host))]}
+  (-> host
+      str
+      url/url
+      (assoc :path "/partner/jobs")
+      str
+      (http/post (merge http-opts {:form-params job-req} {:headers (auth-header token)}))
       parse-4xx-response))

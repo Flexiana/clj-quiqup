@@ -54,3 +54,10 @@ nil
 (:body (clj-quiqup/login host "client-id" "client-secret"))
 {:access_token "token", :token_type "bearer", :expires_in 3600}
 ```
+
+### create-job
+Creates a job from a given job request.
+
+```clojure
+(:body (quiqup/create-job host token {:pickups [{:contact_name "Danny Hawkins" ...}]}
+{:id "20171216-01bda77f", {:orders [{:pickup {:id "o-9613881", :contact_name ...}}]}}
