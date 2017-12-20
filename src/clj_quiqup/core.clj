@@ -77,3 +77,16 @@
       str
       (http/post (merge http-opts {:form-params job-req} {:headers (auth-header token)}))
       parse-4xx-response))
+
+
+(defn submit-job
+  "Submits a job by a given `id`"
+  [host token id submission-req]
+  {:pre [(not (blank? host))]}
+  (-> host
+      str
+      url/url
+      (assoc :path (format "/partner/jobs/%s/submissions" id))
+      str
+      (http/post (merge http-opts {:form-params submission-req} {:headers (auth-header token)}))
+      parse-4xx-response))
