@@ -61,3 +61,12 @@ Creates a job from a given job request.
 ```clojure
 (:body (quiqup/create-job host token {:pickups [{:contact_name "Danny Hawkins" ...}]}
 {:id "20171216-01bda77f", {:orders [{:pickup {:id "o-9613881", :contact_name ...}}]}}
+```
+
+### submit-job
+Submits a job by a given id.
+
+```clojure
+(:body (quiqup/submit-job host token "20171216-01bda77f" {:earliest_collection_at "2017-12-14T13:49:44Z"}))
+{:id "20171216-01bda77f", :state "pending_assignment", :earliest_collection_at "2017-12-14T15:49:44Z", ...}
+```
