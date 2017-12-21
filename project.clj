@@ -1,4 +1,4 @@
-(defproject clj-quiqup "0.0.0"
+(defproject clj-quiqup "0.1.0"
   :description "A client for Quiqup API based on clj-http.client"
   :url "https://github.com/flexiana/clj-quiqup"
   :license {:name "MIT License"
