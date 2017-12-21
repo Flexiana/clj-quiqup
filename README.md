@@ -70,3 +70,11 @@ Submits a job by a given id.
 (:body (quiqup/submit-job host token "20171216-01bda77f" {:earliest_collection_at "2017-12-14T13:49:44Z"}))
 {:id "20171216-01bda77f", :state "pending_assignment", :earliest_collection_at "2017-12-14T15:49:44Z", ...}
 ```
+
+### get-job
+Gets a job by a given id.
+
+```clojure
+(:body (quiqup/get-job host token "20171216-01bda77f"))
+{:id "20171216-01bda77f", :state "pending_assignment", :earliest_collection_at "2017-12-14T15:49:44Z", ...}
+```

@@ -90,3 +90,16 @@
       str
       (http/post (merge http-opts {:form-params submission-req} {:headers (auth-header token)}))
       parse-4xx-response))
+
+
+(defn get-job
+  "Returns a job by a given `id`"
+  [host token id]
+  {:pre [(not (blank? host))]}
+  (-> host
+      str
+      url/url
+      (assoc :path (str "/partner/jobs/" id))
+      str
+      (http/get (merge http-opts {:headers (auth-header token)}))
+      parse-4xx-response))
