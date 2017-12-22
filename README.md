@@ -8,6 +8,14 @@ A client for [Quiqup API based](https://api-docs.quiqup.com) on [clj-http.client
 [![License](https://img.shields.io/badge/MIT-Clause-blue.svg)](https://opensource.org/licenses/MIT)
 
 
+Leiningen/Boot
+--------------
+
+```clojure
+[clj-quiqup "0.1.0"]
+```
+
+
 Documentation
 -------------
 
